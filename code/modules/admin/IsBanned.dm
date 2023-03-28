@@ -9,7 +9,7 @@
 GLOBAL_LIST_EMPTY(ckey_redirects)
 
 /world/IsBanned(key, address, computer_id, type, real_bans_only=FALSE)
-	debug_world_log("isbanned(): '[args.Join("', '")]'")
+	debug_world_log("isbanned(): SRC:'[src]', USR:'[usr]' ARGS:'[args.Join("', '")]'")
 	if (!key || (!real_bans_only && (!address || !computer_id)))
 		if(real_bans_only)
 			return FALSE
@@ -61,7 +61,7 @@ GLOBAL_LIST_EMPTY(ckey_redirects)
 	if(!real_bans_only && !C && extreme_popcap && !admin)
 		var/popcap_value = GLOB.clients.len
 		if(popcap_value >= extreme_popcap && !GLOB.joined_player_list.Find(ckey))
-			if((!CONFIG_GET(flag/byond_member_bypass_popcap) || !world.IsSubscribed(ckey, "BYOND")) && !GLOB.patrons.Find(ckey))
+			if((!CONFIG_GET(flag/byond_member_bypass_popcap) || !world.IsSubscribed(ckey, "BYOND")) && !IS_PATRON(ckey))
 				var/redirect_address = CONFIG_GET(string/redirect_address)
 				if(redirect_address != "")
 					log_access("Failed Login: [key] - Population cap reached. Redirecting to overflow server.")

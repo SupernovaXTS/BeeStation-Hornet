@@ -18,6 +18,7 @@
 		var/obj/item/cartridge/virus/clown/cart = cartridge
 		if(istype(cart) && cart.charges < 5)
 			cart.charges++
+			playsound(src,'sound/machines/ping.ogg', 30, TRUE)
 
 //Mime PDA sends "silent" messages.
 /obj/item/pda/mime
@@ -153,6 +154,10 @@
 	name = "shaft miner PDA"
 	icon_state = "pda-miner"
 
+/obj/item/pda/exploration
+	name = "exploration PDA"
+	icon_state = "pda-exploration"
+
 /obj/item/pda/syndicate
 	default_cartridge = /obj/item/cartridge/virus/syndicate
 	icon_state = "pda-syndi"
@@ -228,4 +233,12 @@
 	desc = "A shitty knockoff of a portable microcomputer by Thinktronic Systems, LTD. Complete with a cracked operating system."
 	note = "Error: Unlicensed OS. Please contact your supervisor."
 	icon_state = "pda-knockoff"
+	inserted_item = /obj/item/pen/charcoal
 
+/obj/item/pda/celebrity
+	name = "fancy PDA"
+	default_cartridge = /obj/item/cartridge/annoyance //so they can send messages to everyone and be generally obnoxious
+	inserted_item = /obj/item/pen/fountain
+	desc = "A portable microcomputer by Thinktronic Systems, LTD. This model is gold-plated, and probably quite expensive."
+	icon_state = "pda-gold"
+	ttone = "ch-CHING"

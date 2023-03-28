@@ -12,8 +12,6 @@
 	density = FALSE
 	state_open = TRUE
 	circuit = /obj/item/circuitboard/machine/sleeper
-	ui_x = 310
-	ui_y = 520
 
 	var/efficiency = 1
 	var/min_health = -25
@@ -50,6 +48,7 @@
 	for(var/i in 1 to I)
 		available_chems |= possible_chems[i]
 	reset_chem_buttons()
+	ui_update()
 
 /obj/machinery/sleeper/update_icon()
 	if(state_open)
@@ -63,6 +62,7 @@
 	open_machine()
 
 /obj/machinery/sleeper/Exited(atom/movable/user)
+	. = ..()
 	if (!state_open && user == occupant)
 		container_resist(user)
 
@@ -70,6 +70,7 @@
 	if (!state_open)
 		container_resist(user)
 
+//Note: open_machine and close_machine already ui_update()
 /obj/machinery/sleeper/open_machine()
 	if(!state_open && !panel_open)
 		flick("[initial(icon_state)]-anim", src)
@@ -130,15 +131,22 @@
 		visible_message("<span class='notice'>[usr] pries open [src].</span>", "<span class='notice'>You pry open [src].</span>")
 		open_machine()
 
-/obj/machinery/sleeper/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = FALSE, \
-									datum/tgui/master_ui = null, datum/ui_state/state = GLOB.notcontained_state)
 
-	if(controls_inside && state == GLOB.notcontained_state)
-		state = GLOB.default_state // If it has a set of controls on the inside, make it actually controllable by the mob in it.
+/obj/machinery/sleeper/ui_requires_update(mob/user, datum/tgui/ui)
+	. = ..()
 
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+	if(occupant)
+		. = TRUE // Only autoupdate when occupied
+
+/obj/machinery/sleeper/ui_state(mob/user)
+	if(controls_inside)
+		return GLOB.default_state
+	return GLOB.notcontained_state
+
+/obj/machinery/sleeper/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, ui_key, "Sleeper", name, ui_x, ui_y, master_ui, state)
+		ui = new(user, src, "Sleeper")
 		ui.open()
 
 /obj/machinery/sleeper/AltClick(mob/user)
@@ -234,6 +242,7 @@
 		occupant.reagents.add_reagent(chem_buttons[chem], 10) //emag effect kicks in here so that the "intended" chem is used for all checks, for extra FUUU
 		if(user)
 			log_combat(user, occupant, "injected [chem] into", addition = "via [src]")
+		use_power(100)
 		return TRUE
 
 /obj/machinery/sleeper/proc/chem_allowed(chem)
@@ -261,16 +270,8 @@
 	icon_state = "sleeper_s"
 	controls_inside = TRUE
 
-/obj/machinery/sleeper/syndie/fullupgrade/Initialize()
-	. = ..()
-	component_parts = list()
-	component_parts += new /obj/item/circuitboard/machine/sleeper(null)
-	component_parts += new /obj/item/stock_parts/matter_bin/bluespace(null)
-	component_parts += new /obj/item/stock_parts/manipulator/femto(null)
-	component_parts += new /obj/item/stack/sheet/glass(null)
-	component_parts += new /obj/item/stack/sheet/glass(null)
-	component_parts += new /obj/item/stack/cable_coil(null)
-	RefreshParts()
+/obj/machinery/sleeper/syndie/fullupgrade
+	circuit = /obj/item/circuitboard/machine/sleeper/fullupgrade
 
 /obj/machinery/sleeper/clockwork
 	name = "soothing sleeper"

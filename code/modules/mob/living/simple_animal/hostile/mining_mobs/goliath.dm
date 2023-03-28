@@ -35,6 +35,7 @@
 	loot = list(/obj/item/stack/sheet/animalhide/goliath_hide)
 
 	do_footstep = TRUE
+	discovery_points = 2000
 
 /mob/living/simple_animal/hostile/asteroid/goliath/Life()
 	. = ..()
@@ -134,7 +135,7 @@
 			LAZYCLEARLIST(cached_tentacle_turfs)
 			last_location = loc
 			tentacle_recheck_cooldown = world.time + initial(tentacle_recheck_cooldown)
-			for(var/turf/open/T in orange(4, loc))
+			for(var/turf/open/T in (RANGE_TURFS(4, src)-get_turf(src)))
 				LAZYADD(cached_tentacle_turfs, T)
 		for(var/t in cached_tentacle_turfs)
 			if(isopenturf(t))

@@ -2,7 +2,8 @@
 
 
 [![forthebadge](https://forthebadge.com/images/badges/built-with-resentment.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-technical-debt.svg)](https://user-images.githubusercontent.com/8171642/50290880-ffef5500-043a-11e9-8270-a2e5b697c86c.png) [![forinfinityandbyond](https://user-images.githubusercontent.com/5211576/29499758-4efff304-85e6-11e7-8267-62919c3688a9.gif)](https://www.reddit.com/r/SS13/comments/5oplxp/what_is_the_main_problem_with_byond_as_an_engine/dclbu1a)
-[![Build Status](https://travis-ci.com/BeeStation/BeeStation-Hornet.svg?branch=master)](https://travis-ci.com/BeeStation/BeeStation-Hornet) ![Open Issues](https://isitmaintained.com/badge/open/BeeStation/BeeStation-Hornet.svg)
+[![Build Status](https://github.com/BeeStation/BeeStation-Hornet/workflows/Run%20tests/badge.svg)](https://github.com/BeeStation/BeeStation-Hornet/actions?query=workflow%3A%22Run+tests%22)
+![Open Issues](https://isitmaintained.com/badge/open/BeeStation/BeeStation-Hornet.svg)
 
 **Website:** http://beestation13.com
 **Code:** https://github.com/beestation/beestation-hornet
@@ -29,18 +30,13 @@ docker run -d -p <your port>:1337 -v /path/to/your/config:/beestation/config -v 
 
 ## INSTALLATION
 
-First-time installation should be fairly straightforward. First, you'll need
-BYOND installed. You can get it from https://www.byond.com/download. Once you've done
-that, extract the game files to wherever you want to keep them. This is a
-sourcecode-only release, so the next step is to compile the server files.
-Open beestation.dme by double-clicking it, open the Build menu, and click
-compile. This'll take a little while, and if everything's done right you'll get
-a message like this:
+You can **no** longer compile the codebase simply through **DreamMaker**.
 
-```
-saving beestation.dmb (DEBUG mode)
-beestation.dmb - 0 errors, 0 warnings
-```
+You will find `BUILD.bat` in the root folder of Beestation, double-clicking it will initiate the build. It consists of multiple steps and might take around 1-5 minutes to compile. Unix users can directly call ./tools/build/build.
+
+**Building Beestation in DreamMaker directly is now deprecated and might produce errors**, such as `'tgui.bundle.js': cannot find file`.
+
+**[How to compile in VSCode and other build options](tools/build/README.md).**
 
 If you see any errors or warnings, something has gone wrong - possibly a corrupt
 download or the files extracted wrong. If problems persist, ask for assistance
@@ -92,8 +88,10 @@ the new version.
 
 ## HOSTING
 
-If you'd like a more robust server hosting option for tgstation and its
-derivatives. Check out their server tools suite at
+Hosting requires the [Microsoft Visual C++ 2015 Redistributable](https://www.microsoft.com/en-us/download/details.aspx?id=52685). Specifically, 	
+`vc_redist.x86.exe`. *Not* the 64-bit version. There is a decent chance you already have it if you've installed a game on Steam.
+
+If you'd like a more robust server hosting option, check out tgstation's server tools suite at
 https://github.com/tgstation/tgstation-server
 
 ## MAPS
@@ -104,7 +102,6 @@ BeeStation currently comes equipped with these maps.
 * [BoxStation](https://wiki.beestation13.com/view/Boxstation)
 * [MetaStation](https://wiki.beestation13.com/view/MetaStation)
 * [PubbyStation](https://wiki.beestation13.com/view/PubbyStation)
-* [DonutStation](https://wiki.beestation13.com/view/Donutstation)
 
 
 All maps have their own code file that is in the base of the _maps directory. Maps are loaded dynamically when the game starts. Follow this guideline when adding your own map, to your fork, for easy compatibility.
